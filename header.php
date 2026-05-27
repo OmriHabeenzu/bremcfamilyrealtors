@@ -130,12 +130,6 @@ $metaDesc        = isset($metaDescription) ? e($metaDescription) : 'Bremc Family
                                 <i class="fa fa-sign-in-alt me-1"></i>Login
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a href="<?php echo $base; ?>register.php"
-                               class="nav-link <?php echo isActive('register.php'); ?>">
-                                <i class="fa fa-user-plus me-1"></i>Register
-                            </a>
-                        </li>
                     <?php endif; ?>
                 </ul>
 

@@ -89,8 +89,6 @@ include 'header.php';
 
                     <div class="text-center small">
                         <a href="forgot_password.php">Forgot Password?</a>
-                        &nbsp;·&nbsp;
-                        <a href="register.php">Create an account</a>
                     </div>
                 </form>
             </div>

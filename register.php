@@ -4,9 +4,11 @@ require_once 'db.php';
 
 if (session_status() !== PHP_SESSION_ACTIVE) session_start();
 
-// Already logged-in users don't need to register
-if (isset($_SESSION['username'])) {
-    redirect('index.php');
+// Registration is admin-only — public sign-ups are disabled
+// New users must be added via the Admin Dashboard
+if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
+    flash('New accounts can only be created by an administrator.', 'warning');
+    redirect('login.php');
 }
 
 $errors = [];
