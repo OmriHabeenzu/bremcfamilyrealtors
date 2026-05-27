@@ -4,9 +4,9 @@ config.php
 *.env
 
 # ── User-uploaded files (large, already on server) ────────────
-# Keep the folder itself (via .gitkeep) but ignore its contents
-images/*
-!images/.gitkeep
+# images/ is a symlink on the server pointing to ~/property_images/
+# which lives outside the git deployment zone — never commit it
+images/
 uploads/
 
 # ── OS / editor junk ─────────────────────────────────────────
