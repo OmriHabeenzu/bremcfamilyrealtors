@@ -1,0 +1,365 @@
+/* ============================================================
+   Bremc Family Realtors — Global Stylesheet
+   Bootstrap 5.3 is the base; these rules layer on top.
+   ============================================================ */
+
+/* ─── Brand colours ────────────────────────────────────────── */
+:root {
+    --bremc-blue:   #0d2b6b;
+    --bremc-teal:   #008374;
+    --bremc-orange: #f85a40;
+    --bremc-gold:   #f8c23c;
+    --bremc-light:  #f4f7fc;
+    --bremc-dark:   #1a1a2e;
+}
+
+/* ─── Base ──────────────────────────────────────────────────── */
+body {
+    font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    background-color: var(--bremc-light);
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+main, .page-content {
+    flex: 1 0 auto;
+}
+
+a {
+    color: var(--bremc-teal);
+    text-decoration: none;
+}
+a:hover {
+    color: var(--bremc-orange);
+    text-decoration: underline;
+}
+
+/* ─── Navbar ────────────────────────────────────────────────── */
+.navbar {
+    background-color: var(--bremc-blue) !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,.25);
+}
+.navbar-brand,
+.nav-link {
+    color: #fff !important;
+}
+.nav-link:hover,
+.nav-link.active {
+    background-color: rgba(255,255,255,.18);
+    border-radius: 5px;
+}
+.navbar-toggler {
+    border-color: rgba(255,255,255,.5) !important;
+}
+.navbar-brand-logo {
+    width: 48px;
+    height: 48px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin-right: .5rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,.3);
+}
+.btn-search {
+    background-color: var(--bremc-teal);
+    color: #fff;
+    border: none;
+}
+.btn-search:hover {
+    background-color: var(--bremc-orange);
+    color: #fff;
+}
+
+/* ─── Hero / Carousel ───────────────────────────────────────── */
+.hero-carousel .carousel-item img {
+    max-height: 520px;
+    width: 100%;
+    object-fit: cover;
+}
+.carousel-caption-custom {
+    position: absolute;
+    bottom: 30px;
+    left: 0; right: 0;
+    text-align: center;
+    color: #fff;
+    text-shadow: 0 2px 6px rgba(0,0,0,.6);
+}
+.carousel-caption-custom h2 {
+    font-size: 2.2rem;
+    font-weight: 700;
+}
+
+/* ─── Section headings ──────────────────────────────────────── */
+.section-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--bremc-blue);
+    margin-bottom: 1.5rem;
+    position: relative;
+    display: inline-block;
+}
+.section-title::after {
+    content: '';
+    display: block;
+    width: 60px;
+    height: 4px;
+    background: var(--bremc-teal);
+    border-radius: 2px;
+    margin: .4rem auto 0;
+}
+
+/* ─── Service cards ─────────────────────────────────────────── */
+.service-card {
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,.08);
+    transition: transform .3s ease, box-shadow .3s ease;
+    min-height: 200px;
+}
+.service-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 10px 24px rgba(0,0,0,.14);
+}
+.service-card .card-title {
+    font-weight: 700;
+    color: var(--bremc-blue);
+}
+.service-icon {
+    font-size: 2.4rem;
+    color: var(--bremc-teal);
+    margin-bottom: .6rem;
+}
+
+/* ─── Property cards ────────────────────────────────────────── */
+.property-card {
+    border: none;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0,0,0,.09);
+    transition: transform .3s ease, box-shadow .3s ease;
+}
+.property-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 28px rgba(0,0,0,.16);
+}
+.property-card .card-img-top {
+    height: 210px;
+    object-fit: cover;
+    width: 100%;
+}
+.property-badge {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    font-size: .75rem;
+    font-weight: 700;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    padding: .3em .75em;
+    border-radius: 30px;
+}
+.badge-sale   { background: var(--bremc-teal);   color: #fff; }
+.badge-rent   { background: var(--bremc-orange);  color: #fff; }
+.property-price {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--bremc-teal);
+}
+.property-meta {
+    font-size: .9rem;
+    color: #666;
+}
+.property-meta i {
+    color: var(--bremc-blue);
+    width: 18px;
+}
+
+/* ─── Property detail page ──────────────────────────────────── */
+.property-detail-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--bremc-blue);
+}
+.property-detail-carousel .carousel-item img {
+    max-height: 520px;
+    width: 100%;
+    object-fit: cover;
+    border-radius: 12px;
+}
+.contact-agent-card {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 14px rgba(0,0,0,.1);
+    padding: 1.5rem;
+}
+.back-button {
+    display: inline-block;
+    margin-top: 1.5rem;
+    padding: .6rem 1.8rem;
+    background: var(--bremc-blue);
+    color: #fff;
+    border-radius: 30px;
+    font-weight: 600;
+    transition: background .25s;
+}
+.back-button:hover {
+    background: var(--bremc-teal);
+    color: #fff;
+    text-decoration: none;
+}
+
+/* ─── Search bar / filter panel ─────────────────────────────── */
+.filter-panel {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 14px rgba(0,0,0,.08);
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 2rem;
+}
+
+/* ─── Testimonials ──────────────────────────────────────────── */
+.testimonials-section {
+    background: var(--bremc-blue);
+    color: #fff;
+    padding: 3.5rem 0;
+}
+.testimonial-card {
+    background: rgba(255,255,255,.1);
+    border-radius: 12px;
+    padding: 2rem;
+    text-align: center;
+}
+.testimonial-card p {
+    font-size: 1.1rem;
+    font-style: italic;
+    margin-bottom: .75rem;
+}
+.testimonial-author {
+    font-weight: 700;
+    color: var(--bremc-gold);
+}
+
+/* ─── Contact form ──────────────────────────────────────────── */
+.contact-card {
+    background: #fff;
+    border-radius: 14px;
+    box-shadow: 0 6px 20px rgba(0,0,0,.1);
+    padding: 2rem;
+}
+
+/* ─── About page ────────────────────────────────────────────── */
+.about-hero {
+    background: linear-gradient(135deg, var(--bremc-blue) 0%, var(--bremc-teal) 100%);
+    color: #fff;
+    padding: 4rem 1rem;
+    text-align: center;
+}
+.team-photo {
+    width: 110px;
+    height: 110px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 4px solid var(--bremc-teal);
+    box-shadow: 0 4px 10px rgba(0,0,0,.15);
+}
+
+/* ─── Admin dashboard ───────────────────────────────────────── */
+.admin-stat-card {
+    background: linear-gradient(135deg, var(--bremc-teal), var(--bremc-blue));
+    color: #fff;
+    border-radius: 12px;
+    padding: 1.5rem;
+    text-align: center;
+    box-shadow: 0 4px 14px rgba(0,0,0,.12);
+    transition: transform .3s;
+}
+.admin-stat-card:hover { transform: translateY(-5px); }
+.admin-stat-card h2 { font-size: 2rem; font-weight: 700; }
+
+/* ─── Footer ────────────────────────────────────────────────── */
+.site-footer {
+    background: #111827;
+    color: #d1d5db;
+    padding: 2.5rem 0 1.5rem;
+    flex-shrink: 0;
+}
+.site-footer a {
+    color: var(--bremc-gold);
+    text-decoration: none;
+}
+.site-footer a:hover {
+    color: #fff;
+}
+.footer-social a {
+    display: inline-block;
+    width: 38px;
+    height: 38px;
+    line-height: 38px;
+    text-align: center;
+    border-radius: 50%;
+    background: rgba(255,255,255,.08);
+    color: #fff;
+    font-size: 1rem;
+    margin: 0 .25rem;
+    transition: background .25s;
+}
+.footer-social a:hover {
+    background: var(--bremc-teal);
+}
+.footer-divider {
+    border-color: rgba(255,255,255,.12);
+}
+
+/* ─── Buttons ───────────────────────────────────────────────── */
+.btn-bremc-primary {
+    background-color: var(--bremc-teal);
+    border-color: var(--bremc-teal);
+    color: #fff;
+    border-radius: 6px;
+    font-weight: 600;
+}
+.btn-bremc-primary:hover {
+    background-color: var(--bremc-blue);
+    border-color: var(--bremc-blue);
+    color: #fff;
+}
+.btn-danger-outline {
+    color: #dc3545;
+    border: 1px solid #dc3545;
+    border-radius: 6px;
+    background: transparent;
+}
+.btn-danger-outline:hover {
+    background: #dc3545;
+    color: #fff;
+}
+
+/* ─── Flash messages ────────────────────────────────────────── */
+.flash-container {
+    position: fixed;
+    top: 75px;
+    right: 20px;
+    z-index: 9999;
+    min-width: 280px;
+    max-width: 420px;
+}
+
+/* ─── Forms ─────────────────────────────────────────────────── */
+.form-control:focus, .form-select:focus {
+    border-color: var(--bremc-teal);
+    box-shadow: 0 0 0 .2rem rgba(0,131,116,.2);
+}
+
+/* ─── Pagination ────────────────────────────────────────────── */
+.page-link {
+    color: var(--bremc-blue);
+}
+.page-item.active .page-link {
+    background-color: var(--bremc-teal);
+    border-color: var(--bremc-teal);
+}
+
+/* ─── Utilities ─────────────────────────────────────────────── */
+.img-lazy { opacity: 0; transition: opacity .4s ease; }
+.img-lazy.loaded { opacity: 1; }

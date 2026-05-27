@@ -1,0 +1,15 @@
+User-agent: *
+# Block admin panel and all process/action scripts
+Disallow: /admin/
+Disallow: /process_submit.php
+Disallow: /contact_process.php
+Disallow: /contact_owner_process.php
+Disallow: /logout.php
+Disallow: /register.php
+Disallow: /login.php
+Disallow: /bremc/
+
+# Allow everything else
+Allow: /
+
+Sitemap: https://www.bremcfamilyrealtors.net/sitemap.xml
