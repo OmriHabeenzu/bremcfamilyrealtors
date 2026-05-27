@@ -1,94 +1,81 @@
 <?php
-session_start();
-include 'db.php';
+require_once __DIR__ . '/../functions.php';
+require_once __DIR__ . '/db.php';
 
-// Check if the user is logged in and admin
+if (session_status() !== PHP_SESSION_ACTIVE) session_start();
+
 if (!isset($_SESSION['username']) || $_SESSION['role'] !== 'admin') {
-    header("Location: login.php");
-    exit();
+    redirect('../login.php');
 }
 
-// Process form submission
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $title = $_POST['title'];
-    $description = $_POST['description'];
-    $location = $_POST['location'];
-    $price = $_POST['price'];
-    $video_url = $_POST['video_url'];
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    redirect('admin_dashboard.php');
+}
 
-    // Handle multiple image uploads
-    $imageFiles = $_FILES['images'];
-    $imagePaths = [];
+csrf_verify();
 
-    // Check if 'images' directory exists
-    $target_dir = "images/";
-    if (!is_dir($target_dir)) {
-        echo "The 'images' directory does not exist. Please create it.";
-        exit();
-    }
+$title       = clean($_POST['title'] ?? '');
+$description = clean($_POST['description'] ?? '');
+$location    = clean($_POST['location'] ?? '');
+$price       = filter_var($_POST['price'] ?? '', FILTER_VALIDATE_FLOAT);
+$rooms       = filter_var($_POST['rooms'] ?? 1, FILTER_VALIDATE_INT);
+$type        = in_array($_POST['type'] ?? '', ['sale', 'rent']) ? $_POST['type'] : 'sale';
+$video_url   = filter_var(trim($_POST['video_url'] ?? ''), FILTER_VALIDATE_URL) ?: null;
+$user_id     = (int)$_SESSION['user_id'];
 
-    // Check if 'images' directory is writable
-    if (!is_writable($target_dir)) {
-        echo "The 'images' directory is not writable. Please check permissions.";
-        exit();
-    }
+if (!$title || !$description || $price === false || !$location) {
+    flash('All required fields must be filled in.', 'danger');
+    redirect('admin_dashboard.php');
+}
 
-    for ($i = 0; $i < count($imageFiles['name']); $i++) {
-        if ($imageFiles['error'][$i] == UPLOAD_ERR_OK) {
-            $file_name = basename($imageFiles['name'][$i]);
+// ── Image upload — absolute path to ROOT images/ folder ──────
+$target_dir = dirname(__DIR__) . '/images/';
+if (!is_dir($target_dir)) {
+    mkdir($target_dir, 0755, true);
+}
 
-            // Sanitize the filename by removing spaces and special characters
-            $file_name = preg_replace('/[^a-zA-Z0-9\-_\.]/', '_', $file_name);
-            
-            $target_file = $target_dir . $file_name;
-            $uploadOk = 1;
-            $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
+$allowed    = ['image/jpeg' => 'jpg', 'image/png' => 'png'];
+$imagePaths = [];
 
-            // Check if image file is an actual image
-            $check = getimagesize($imageFiles['tmp_name'][$i]);
-            if ($check === false) {
-                echo "File " . $file_name . " is not an image.";
-                $uploadOk = 0;
-            }
+for ($i = 0; $i < count($_FILES['images']['name']); $i++) {
+    if ($_FILES['images']['error'][$i] !== UPLOAD_ERR_OK) continue;
+    if ($_FILES['images']['size'][$i] > 5_000_000) continue;
 
-            // Check file size (limit to 5MB)
-            if ($imageFiles['size'][$i] > 5000000) {
-                echo "Sorry, " . $file_name . " is too large.";
-                $uploadOk = 0;
-            }
+    $mime = mime_content_type($_FILES['images']['tmp_name'][$i]);
+    if (!array_key_exists($mime, $allowed)) continue;
+    if (getimagesize($_FILES['images']['tmp_name'][$i]) === false) continue;
 
-            // Allow certain file formats
-            if (!in_array($imageFileType, ['jpg', 'jpeg', 'png'])) {
-                echo "Sorry, only JPG, JPEG & PNG files are allowed. (" . $file_name . ")";
-                $uploadOk = 0;
-            }
-
-            // Upload image if everything is ok
-            if ($uploadOk) {
-                if (move_uploaded_file($imageFiles['tmp_name'][$i], $target_file)) {
-                    $imagePaths[] = $file_name;
-                } else {
-                    echo "Sorry, there was an error uploading " . $file_name . ".";
-                }
-            }
-        }
-    }
-
-    if (count($imagePaths) > 0) {
-        $images = implode(',', $imagePaths);
-
-        // Insert property details into the database
-        $stmt = $conn->prepare("INSERT INTO properties (title, description, price, location, image, video_url) VALUES (?, ?, ?, ?, ?, ?)");
-        $stmt->bind_param("ssisss", $title, $description, $price, $location, $images, $video_url);
-
-        if ($stmt->execute()) {
-            echo "Property added successfully!";
-        } else {
-            echo "Error adding property.";
-        }
-        $stmt->close();
-    } else {
-        echo "No images uploaded.";
+    $newName = uniqid('img_', true) . '.' . $allowed[$mime];
+    if (move_uploaded_file($_FILES['images']['tmp_name'][$i], $target_dir . $newName)) {
+        $imagePaths[] = $newName;
     }
 }
-?>
+
+if (empty($imagePaths)) {
+    flash('Please upload at least one valid JPG or PNG image.', 'danger');
+    redirect('admin_dashboard.php');
+}
+
+$cover_image  = $imagePaths[0];
+$other_images = implode(',', array_slice($imagePaths, 1));
+
+$stmt = $conn->prepare(
+    "INSERT INTO properties (user_id, title, description, price, location, cover_image, other_images, rooms, type, video_url)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+);
+$stmt->bind_param("ississssss",
+    $user_id, $title, $description, $price,
+    $location, $cover_image, $other_images,
+    $rooms, $type, $video_url
+);
+
+if ($stmt->execute()) {
+    $newId = $stmt->insert_id;
+    $stmt->close();
+    flash('Property added successfully!', 'success');
+    redirect('../property.php?id=' . $newId);
+} else {
+    flash('Database error: ' . $stmt->error, 'danger');
+    $stmt->close();
+    redirect('admin_dashboard.php');
+}

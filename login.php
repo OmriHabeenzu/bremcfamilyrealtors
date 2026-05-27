@@ -35,7 +35,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_SESSION['role']     = $user['role'];
             $_SESSION['user_id']  = $user['id'];
 
-            $dest = ($user['role'] === 'admin') ? 'admin/admin_dashboard.php' : 'index.php';
+            // Use root-relative paths so the redirect works on any server config
+            $dest = ($user['role'] === 'admin') ? '/admin/admin_dashboard.php' : '/index.php';
             redirect($dest);
         } else {
             // Deliberate vague message — don't reveal whether username exists

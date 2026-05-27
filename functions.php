@@ -71,6 +71,12 @@ function valid_email(string $email): string|false {
 // ─── Redirect helper ─────────────────────────────────────────────────────────
 
 function redirect(string $url): void {
+    // If it's a root-relative path, prepend scheme + host for a fully-absolute URL
+    // This is the most compatible form across all server configs
+    if ($url[0] === '/') {
+        $scheme = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+        $url    = $scheme . '://' . $_SERVER['HTTP_HOST'] . $url;
+    }
     header('Location: ' . $url);
     exit();
 }
