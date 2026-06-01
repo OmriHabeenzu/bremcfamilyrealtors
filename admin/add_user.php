@@ -18,6 +18,8 @@ $username  = clean($_POST['username'] ?? '');
 $password  = $_POST['password'] ?? '';
 $confirm   = $_POST['confirm_password'] ?? '';
 $role      = in_array($_POST['role'] ?? '', ['user', 'admin']) ? $_POST['role'] : 'user';
+$email     = valid_email($_POST['email'] ?? '') ?: '';
+$phone     = preg_replace('/[^0-9+\- ]/', '', $_POST['phone'] ?? '');
 
 if (empty($username) || empty($password)) {
     flash('Username and password are required.', 'danger');
@@ -47,8 +49,8 @@ if ($check->num_rows > 0) {
 $check->close();
 
 $hashed = password_hash($password, PASSWORD_DEFAULT);
-$stmt   = $conn->prepare("INSERT INTO users (username, password, role) VALUES (?, ?, ?)");
-$stmt->bind_param("sss", $username, $hashed, $role);
+$stmt   = $conn->prepare("INSERT INTO users (username, password, role, email, phone) VALUES (?, ?, ?, ?, ?)");
+$stmt->bind_param("sssss", $username, $hashed, $role, $email, $phone);
 
 if ($stmt->execute()) {
     flash("User '{$username}' added successfully.", 'success');

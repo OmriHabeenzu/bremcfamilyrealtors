@@ -149,20 +149,28 @@ include __DIR__ . '/../header.php';
             <?php echo csrf_field(); ?>
             <div class="row g-3">
                 <div class="col-md-4">
-                    <label class="form-label fw-semibold">Username</label>
+                    <label class="form-label fw-semibold">Username <span class="text-danger">*</span></label>
                     <input type="text" name="username" class="form-control" required placeholder="Username">
                 </div>
-                <div class="col-md-3">
-                    <label class="form-label fw-semibold">Password</label>
+                <div class="col-md-4">
+                    <label class="form-label fw-semibold">Email</label>
+                    <input type="email" name="email" class="form-control" placeholder="email@example.com">
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label fw-semibold">Phone</label>
+                    <input type="text" name="phone" class="form-control" placeholder="+260…">
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label fw-semibold">Password <span class="text-danger">*</span></label>
                     <input type="password" name="password" class="form-control" required placeholder="Password">
                 </div>
-                <div class="col-md-3">
-                    <label class="form-label fw-semibold">Confirm Password</label>
+                <div class="col-md-4">
+                    <label class="form-label fw-semibold">Confirm Password <span class="text-danger">*</span></label>
                     <input type="password" name="confirm_password" class="form-control" required placeholder="Confirm">
                 </div>
-                <div class="col-md-2">
+                <div class="col-md-4">
                     <label class="form-label fw-semibold">Role</label>
-                    <select name="role" class="form-select" required>
+                    <select name="role" class="form-select">
                         <option value="user">User</option>
                         <option value="admin">Admin</option>
                     </select>
