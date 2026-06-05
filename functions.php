@@ -4,6 +4,10 @@
  * Include this file wherever session + CSRF are needed.
  */
 
+// Images live OUTSIDE public_html so git deployment can never wipe them.
+// public_html is __DIR__ here; dirname(__DIR__) is its parent (bremcfamilyrealtors.net/).
+define('IMAGES_DIR', dirname(__DIR__) . '/property_images/');
+
 // ─── CSRF ────────────────────────────────────────────────────────────────────
 
 /**

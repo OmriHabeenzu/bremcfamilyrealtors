@@ -35,7 +35,7 @@ $imgStmt->close();
 if ($imgRow) {
     $allImages = array_filter(array_map('trim', explode(',', $imgRow['cover_image'] . ',' . $imgRow['other_images'])));
     foreach ($allImages as $img) {
-        $path = __DIR__ . '/../property_images/' . basename($img);
+        $path = IMAGES_DIR . basename($img);
         if (file_exists($path)) @unlink($path);
     }
 }

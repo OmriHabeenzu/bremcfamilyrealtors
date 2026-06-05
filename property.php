@@ -103,7 +103,7 @@ if (empty($images)) $images = [$property['cover_image']];
                 <div class="carousel-inner">
                     <?php foreach ($images as $i => $img): ?>
                     <div class="carousel-item <?php echo $i === 0 ? 'active' : ''; ?>">
-                        <img src="property_images/<?php echo e(trim($img)); ?>"
+                        <img src="img.php?f=<?php echo e(trim($img)); ?>"
                              class="d-block w-100"
                              alt="<?php echo e($property['title']); ?> photo <?php echo $i + 1; ?>"
                              loading="<?php echo $i === 0 ? 'eager' : 'lazy'; ?>">
@@ -126,7 +126,7 @@ if (empty($images)) $images = [$property['cover_image']];
             <?php if (count($images) > 1): ?>
             <div class="prop-thumbs" id="propThumbs">
                 <?php foreach ($images as $i => $img): ?>
-                <img src="property_images/<?php echo e(trim($img)); ?>"
+                <img src="img.php?f=<?php echo e(trim($img)); ?>"
                      class="prop-thumb <?php echo $i === 0 ? 'active' : ''; ?>"
                      data-bs-target="#propertyCarousel"
                      data-bs-slide-to="<?php echo $i; ?>"
