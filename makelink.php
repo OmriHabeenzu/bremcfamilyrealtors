@@ -2,26 +2,68 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-$source = '/home/u216676786/property_images';
-$link   = '/home/u216676786/public_html/property_images';
+$publicHtml = __DIR__;                          // actual public_html path on this server
+$parent     = dirname($publicHtml);             // one level up (domains/bremcfamilyrealtors.net/)
+$grandpa    = dirname($parent);                 // two levels up (/home/u216676786/)
+
+// Where the images should live (inside public_html so browser can reach them)
+$dest = $publicHtml . '/property_images';
+
+// Possible locations the user may have put the folder
+$candidates = [
+    $grandpa . '/property_images',
+    $parent  . '/property_images',
+    $publicHtml . '/property_images',
+];
 
 echo '<pre>';
-echo 'Source exists: ' . (file_exists($source) ? 'YES' : 'NO') . PHP_EOL;
-echo 'Link exists:   ' . (file_exists($link)   ? 'YES' : 'NO') . PHP_EOL;
-echo 'Is symlink:    ' . (is_link($link)        ? 'YES' : 'NO') . PHP_EOL;
+echo 'public_html is: ' . $publicHtml . PHP_EOL;
+echo 'Destination:    ' . $dest . PHP_EOL . PHP_EOL;
 
-if (is_link($link)) {
-    echo PHP_EOL . 'Symlink already exists — done.';
-} elseif (file_exists($link)) {
-    echo PHP_EOL . 'Real folder already exists at that path.';
-} else {
-    $ok = @symlink($source, $link);
-    echo 'symlink() result: ' . ($ok ? 'SUCCESS' : 'FAILED') . PHP_EOL;
-    if (!$ok) {
-        echo PHP_EOL . 'symlink() is disabled. Use Hostinger File Manager:';
-        echo PHP_EOL . '  hPanel -> Files -> File Manager';
-        echo PHP_EOL . '  Navigate to /home/u216676786/';
-        echo PHP_EOL . '  Right-click property_images -> Move -> /home/u216676786/public_html/property_images';
+foreach ($candidates as $c) {
+    echo 'Checking ' . $c . ' ... ' . (file_exists($c) ? 'EXISTS' : 'not found') . PHP_EOL;
+}
+
+echo PHP_EOL;
+
+// Already in the right place
+if (file_exists($dest) && is_dir($dest)) {
+    $count = count(glob($dest . '/*.{jpg,jpeg,png}', GLOB_BRACE));
+    echo '✅ property_images folder exists inside public_html with ' . $count . ' images. Done!';
+    echo '</pre>';
+    exit;
+}
+
+// Find where the images are and move the folder
+$found = null;
+foreach ($candidates as $c) {
+    if (file_exists($c) && is_dir($c) && $c !== $dest) {
+        $found = $c;
+        break;
     }
 }
+
+if ($found) {
+    echo 'Found images at: ' . $found . PHP_EOL;
+    if (rename($found, $dest)) {
+        $count = count(glob($dest . '/*.{jpg,jpeg,png}', GLOB_BRACE));
+        echo '✅ Moved successfully! ' . $count . ' images now in public_html/property_images/. DELETE this file.';
+    } else {
+        echo '❌ rename() failed.' . PHP_EOL . PHP_EOL;
+        echo 'Use File Manager in hPanel:' . PHP_EOL;
+        echo '  Move: ' . $found . PHP_EOL;
+        echo '  To:   ' . $dest;
+    }
+} else {
+    // Create the folder so uploads work going forward
+    if (mkdir($dest, 0755, true)) {
+        echo '✅ Created empty property_images/ inside public_html.' . PHP_EOL;
+        echo 'Images folder was not found in any expected location.' . PHP_EOL . PHP_EOL;
+        echo 'Use File Manager to move your property_images folder to:' . PHP_EOL;
+        echo '  ' . $dest;
+    } else {
+        echo '❌ Could not create folder either. Check permissions.';
+    }
+}
+
 echo '</pre>';
