@@ -1,14 +1,27 @@
 <?php
-// ONE-TIME SETUP SCRIPT — delete this file immediately after running it
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
 $source = '/home/u216676786/property_images';
 $link   = '/home/u216676786/public_html/property_images';
 
+echo '<pre>';
+echo 'Source exists: ' . (file_exists($source) ? 'YES' : 'NO') . PHP_EOL;
+echo 'Link exists:   ' . (file_exists($link)   ? 'YES' : 'NO') . PHP_EOL;
+echo 'Is symlink:    ' . (is_link($link)        ? 'YES' : 'NO') . PHP_EOL;
+
 if (is_link($link)) {
-    echo '✅ Symlink already exists and is working.';
+    echo PHP_EOL . 'Symlink already exists — done.';
 } elseif (file_exists($link)) {
-    echo '⚠️ A real folder called property_images already exists inside public_html. No symlink created.';
-} elseif (symlink($source, $link)) {
-    echo '✅ Symlink created! Images will now load. DELETE this file immediately.';
+    echo PHP_EOL . 'Real folder already exists at that path.';
 } else {
-    echo '❌ Could not create symlink. Your host may not allow it. Use File Manager to MOVE the property_images folder into public_html instead.';
+    $ok = @symlink($source, $link);
+    echo 'symlink() result: ' . ($ok ? 'SUCCESS' : 'FAILED') . PHP_EOL;
+    if (!$ok) {
+        echo PHP_EOL . 'symlink() is disabled. Use Hostinger File Manager:';
+        echo PHP_EOL . '  hPanel -> Files -> File Manager';
+        echo PHP_EOL . '  Navigate to /home/u216676786/';
+        echo PHP_EOL . '  Right-click property_images -> Move -> /home/u216676786/public_html/property_images';
+    }
 }
+echo '</pre>';
