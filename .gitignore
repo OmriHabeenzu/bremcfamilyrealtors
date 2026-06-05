@@ -3,10 +3,8 @@ config.php
 .env
 *.env
 
-# ── User-uploaded files (large, already on server) ────────────
-# images/ is a symlink on the server pointing to ~/property_images/
-# which lives outside the git deployment zone — never commit it
-images/
+# ── User-uploaded files (live on server, never commit) ────────
+property_images/
 uploads/
 
 # ── OS / editor junk ─────────────────────────────────────────

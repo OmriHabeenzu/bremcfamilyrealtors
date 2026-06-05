@@ -48,7 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $newImagePaths = [];
     if (!empty($_FILES['images']['name'][0])) {
         $allowed = ['image/jpeg' => 'jpg', 'image/png' => 'png'];
-        $target_dir = __DIR__ . '/../images/';
+        $target_dir = __DIR__ . '/../property_images/';
         for ($i = 0; $i < count($_FILES['images']['name']); $i++) {
             if ($_FILES['images']['error'][$i] !== UPLOAD_ERR_OK) continue;
             if ($_FILES['images']['size'][$i] > 5_000_000) { $errors[] = 'An image exceeds 5 MB.'; continue; }

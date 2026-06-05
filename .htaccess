@@ -10,7 +10,7 @@ Options -Indexes
 # ─── Protect the images upload directory (serve files, no PHP execution) ─────
 <IfModule mod_rewrite.c>
     RewriteEngine On
-    RewriteRule ^images/.*\.php$ - [F,L]
+    RewriteRule ^property_images/.*\.php$ - [F,L]
 </IfModule>
 
 # ─── Force HTTPS (uncomment when SSL certificate is active) ──────────────────

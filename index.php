@@ -116,7 +116,7 @@ $stmt->close();
                     <span class="property-badge <?php echo $row['type'] === 'rent' ? 'badge-rent' : 'badge-sale'; ?>">
                         <?php echo $row['type'] === 'rent' ? 'For Rent' : 'For Sale'; ?>
                     </span>
-                    <img src="images/<?php echo e($row['cover_image']); ?>"
+                    <img src="property_images/<?php echo e($row['cover_image']); ?>"
                          class="card-img-top"
                          alt="<?php echo e($row['title']); ?>"
                          loading="lazy">

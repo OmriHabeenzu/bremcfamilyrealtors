@@ -62,7 +62,7 @@ include 'header.php';
                     <span class="property-badge <?php echo $property['type'] === 'rent' ? 'badge-rent' : 'badge-sale'; ?>">
                         <?php echo $property['type'] === 'rent' ? 'For Rent' : 'For Sale'; ?>
                     </span>
-                    <img src="images/<?php echo e($property['cover_image']); ?>"
+                    <img src="property_images/<?php echo e($property['cover_image']); ?>"
                          class="card-img-top"
                          alt="<?php echo e($property['title']); ?>"
                          loading="lazy">

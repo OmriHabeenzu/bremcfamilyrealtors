@@ -29,7 +29,7 @@ if (!$title || !$description || $price === false || !$location) {
 }
 
 // ── Image upload — absolute path to ROOT images/ folder ──────
-$target_dir = dirname(__DIR__) . '/images/';
+$target_dir = dirname(__DIR__) . '/property_images/';
 if (!is_dir($target_dir)) {
     mkdir($target_dir, 0755, true);
 }
